@@ -1,161 +1,243 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { 
+  FaAppleAlt, FaCarrot, FaLeaf, FaTruck, 
+  FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, 
+  FaLinkedin, FaFacebookF, FaTwitter 
+} from "react-icons/fa";
+import { useInView } from "react-intersection-observer";
 
 export default function Home() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  // Products
   const products = [
-    { id: 1, name: 'Organic Wheat', price: '₹120/kg', image: 'public/assets/organicwheat.webp' },
-    { id: 2, name: 'Fresh Tomatoes', price: '₹50/kg', image: 'public/assets/tomato.jpg' },
-    { id: 3, name: 'Organic Rice', price: '₹150/kg', image: 'public/assets/rice.jpg' },
-    { id: 4, name: 'Green Chilli', price: '₹80/kg', image: 'public/assets/chilli.jpg' },
-    { id: 5, name: 'Potatoes', price: '₹40/kg', image: 'public/assets/potato.jpg' },
-    { id: 6, name: 'Carrots', price: '₹60/kg', image: 'public/assets/carrot.jpg' }
-  ]
+    { id: 1, name: "Organic Wheat", price: "₹120/kg", description: "High quality wheat grown organically.", image: "/assets/organicwheat.webp" },
+    { id: 2, name: "Fresh Tomatoes", price: "₹50/kg", description: "Juicy red tomatoes harvested daily.", image: "/assets/tomato.jpg" },
+    { id: 3, name: "Organic Rice", price: "₹150/kg", description: "Premium organic rice for healthy meals.", image: "/assets/rice.jpg" },
+    { id: 4, name: "Green Chilli", price: "₹80/kg", description: "Fresh and spicy green chillies.", image: "/assets/chilli.jpg" },
+    { id: 5, name: "Potatoes", price: "₹40/kg", description: "Fresh potatoes perfect for all recipes.", image: "/assets/potato.jpg" },
+    { id: 6, name: "Carrots", price: "₹60/kg", description: "Crunchy carrots rich in nutrients.", image: "/assets/carrot.jpg" }
+  ];
 
-  const scrollRef = useRef(null)
+  const scrollRef = useRef(null);
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current
-      const scrollAmount = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth
-      scrollRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' })
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollAmount = direction === "left" ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      scrollRef.current.scrollTo({ left: scrollAmount, behavior: "smooth" });
     }
-  }
+  };
 
-  const handleBuy = () => navigate('/login')
+  const handleBuy = () => navigate("/login");
 
-  // Slideshow
-  const slides = [
-    'public/assets/background.jpg',
-    'public/assets/background5.avif'
-  ]
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const slides = ["/assets/background6.png", "/assets/background5.avif"];
+  const [currentSlide, setCurrentSlide] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % slides.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [])
+      setCurrentSlide(prev => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // Gallery images
-  const galleryImages = [
-    'public/assets/gallery1.jpg',
-    'public/assets/gallery2.jpg',
-    'public/assets/gallery3.jpg'
-  ]
+  const galleryImages = ["/assets/gallary1.png", "/assets/gallery2.png", "/assets/gallery5.jpg", "/assets/gallery4.jpg"];
 
-  // Services
   const services = [
-    { id: 1, title: 'Organic Products', logo: 'public/assets/logo.png' },
-    { id: 2, title: 'Farm Consultation', logo: 'public/assets/logo.png' },
-    { id: 3, title: 'Fresh Delivery', logo: 'public/assets/logo.png' }
-  ]
+    { id: 1, title: "Organic Products", description: "We offer fresh, 100% organic produce directly sourced from local farmers.", icon: <FaAppleAlt /> },
+    { id: 2, title: "Farm Consultation", description: "Expert guidance for sustainable farming and improved crop yield.", icon: <FaLeaf /> },
+    { id: 3, title: "Fresh Delivery", description: "Fast and reliable delivery of fresh produce to your doorstep.", icon: <FaTruck /> }
+  ];
+
+  
+  const [aboutRef, aboutInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [productsRef, productsInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [servicesRef, servicesInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
-    <div style={{width: '100%', margin: 0, padding: 0, boxSizing:'border-box'}}>
-      {/* Hero Slideshow */}
-      <div 
-        className="hero" 
+    <div style={{ width: "100%", margin: 0, padding: 0, boxSizing: "border-box", scrollBehavior: "smooth" }}>
+
+    
+      <div
         style={{
-          width: '100%',
-          height: 700,
-          display:'flex', 
-          alignItems:'center', 
-          justifyContent:'space-between', 
-          padding: '0 50px',
+          width: "100%",
+          height: "90vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 50px",
           backgroundImage: `url(${slides[currentSlide]})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          color: '#fff',
-          transition: 'background-image 1s ease-in-out'
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          color: "#fff",
+          transition: "background-image 1s ease-in-out"
         }}
       >
-        <div style={{maxWidth: '50%'}}>
-          <h1 style={{fontSize: '2.5rem', marginBottom: 12}}>Empowering Farmers, Connecting Markets</h1>
-          <p style={{fontSize: '1.1rem', lineHeight: '1.5'}}>Vasundhara Agro helps farmers sell their produce directly to buyers and ensures quality agricultural products for everyone.</p>
-        </div>
-       
+        <h1 style={{ fontSize: "3.5rem", textAlign: "center", textShadow: "2px 2px 12px rgba(0,0,0,0.7)" }}>
+          Empowering Farmers, Connecting Markets
+        </h1>
       </div>
 
-      {/* Products */}
-      <div style={{padding:'40px 50px'}}>
-        <h2 style={{marginBottom:20, color:'#083344'}}>Products for Sale</h2>
-        <div style={{position:'relative'}}>
-          <button onClick={() => scroll('left')} style={{position:'absolute', top:'50%', left:0, transform:'translateY(-50%)', zIndex:1, background:'#073b2f', color:'#fff', border:'none', borderRadius:'50%', width:32, height:32, cursor:'pointer'}}>&lt;</button>
-          <button onClick={() => scroll('right')} style={{position:'absolute', top:'50%', right:0, transform:'translateY(-50%)', zIndex:1, background:'#073b2f', color:'#fff', border:'none', borderRadius:'50%', width:32, height:32, cursor:'pointer'}}>&gt;</button>
-          <div ref={scrollRef} style={{display:'flex', gap:16, overflowX:'auto', padding:'8px 40px', scrollBehavior:'smooth'}}>
-            {products.map(p => (
+    
+      <div 
+        ref={aboutRef} 
+        style={{
+          padding: "60px 50px",
+          opacity: aboutInView ? 1 : 0,
+          transform: aboutInView ? "translateY(0)" : "translateY(50px)",
+          transition: "all 1s ease-out"
+        }}
+      >
+        <h2 style={{ textAlign: "center", fontSize: "3rem", marginBottom: 40, color: "#083344" }}>About Us</h2>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 30 }}>
+          <div style={{ flex: "1 1 450px" }}>
+            <img
+              src="/assets/aboutimg.png"
+              alt="About"
+              style={{ width: "100%", borderRadius: 12, border: "6px solid #083344", transition: "transform 0.3s" }}
+              onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+            />
+          </div>
+          <div style={{ flex: "1 1 550px" }}>
+            <h2 style={{ color: "#083344", fontSize: "2.8rem", marginBottom: 16, textAlign: "center" }}>Organic & Natural</h2>
+            <p style={{ fontSize: "1.1rem", lineHeight: "1.7", marginBottom: 10 }}>
+              Our products are 100% organic and naturally grown, ensuring quality for every household.
+              We work directly with farmers to deliver fresh produce to your doorstep.
+            </p>
+            <p style={{ fontSize: "1.1rem", lineHeight: "1.7" }}>
+              By choosing us, you support sustainable farming, reduce carbon footprint, and enjoy nutritious, chemical-free food every day. Our mission is to empower farmers and create a healthy future for everyone.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    
+      <div
+        ref={productsRef}
+        style={{
+          padding: "60px 50px",
+          opacity: productsInView ? 1 : 0,
+          transform: productsInView ? "translateY(0)" : "translateY(50px)",
+          transition: "all 1s ease-out"
+        }}
+      >
+        <h2 style={{ textAlign: "center", fontSize: "3rem", marginBottom: 50, color: "#083344" }}>Our Products</h2>
+        <div style={{ position: "relative" }}>
+          <button onClick={() => scroll("left")} style={{
+            position: "absolute", top: "50%", left: 0, transform: "translateY(-50%)",
+            zIndex: 1, background: "#073b2f", color: "#fff", border: "none", borderRadius: "50%", width: 50, height: 50, cursor: "pointer", fontSize: 24
+          }}>&lt;</button>
+          <button onClick={() => scroll("right")} style={{
+            position: "absolute", top: "50%", right: 0, transform: "translateY(-50%)",
+            zIndex: 1, background: "#073b2f", color: "#fff", border: "none", borderRadius: "50%", width: 50, height: 50, cursor: "pointer", fontSize: 24
+          }}>&gt;</button>
+
+          <div ref={scrollRef} style={{ display: "flex", gap: 25, overflowX: "auto", padding: "8px 60px", scrollBehavior: "smooth" }}>
+            {products.map((p, idx) => (
               <div key={p.id} className="card" style={{
-                flex:'0 0 200px', 
-                padding:12, 
-                textAlign:'center', 
-                boxShadow:'0 2px 6px rgba(0,0,0,0.1)',
-                display:'flex',
-                flexDirection:'column',
-                alignItems:'center',
-                justifyContent:'space-between',
-                height:320,
-                transition:'transform 0.3s, box-shadow 0.3s',
-                cursor:'pointer'
+                flex: "0 0 320px",
+                padding: 20,
+                textAlign: "center",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-between",
+                height: 450,
+                borderRadius: 12,
+                cursor: "pointer",
+                backgroundColor: "#f9f9f9",
+                opacity: productsInView ? 1 : 0,
+                transform: productsInView ? "translateY(0)" : "translateY(50px)",
+                transition: `all 0.6s ease-out ${idx * 0.2}s` // stagger effect
               }}
-                onMouseEnter={e => {e.currentTarget.style.transform='scale(1.05)'; e.currentTarget.style.boxShadow='0 6px 12px rgba(0,0,0,0.2)'}}
-                onMouseLeave={e => {e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)'}}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.35)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.15)"; }}
               >
-                <img src={p.image} alt={p.name} style={{width:'100%', height:150, objectFit:'cover', marginBottom:8, borderRadius:4}} />
-                <h3 style={{margin:4}}>{p.name}</h3>
-                <p style={{margin:4, color:'#0a3a3e'}}>{p.price}</p>
-                <button className="btn-primary" style={{marginTop:8}} onClick={handleBuy}>Buy Now</button>
+                <img src={p.image} alt={p.name} style={{ width: "100%", height: 250, objectFit: "cover", marginBottom: 12, borderRadius: 8 }} />
+                <h3 style={{ margin: 6 }}>{p.name}</h3>
+                <p style={{ margin: 6, color: "#0a3a3e" }}>{p.price}</p>
+                <p style={{ fontSize: "0.95rem", margin: 6 }}>{p.description}</p>
+                <button style={{ marginTop: 10, padding: "10px 20px", backgroundColor: "#00796b", color: "#fff", border: "none", borderRadius: 6 }} onClick={handleBuy}>Buy Now</button>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* About Section */}
-      <div style={{display:'flex', flexWrap:'wrap', padding:'40px 50px', alignItems:'center', gap:20}}>
-        <div style={{flex:'1 1 400px'}}>
-          <h2 style={{color:'#083344', marginBottom:12}}>Organic & Natural</h2>
-          <p>Our products are 100% organic and naturally grown, ensuring quality for every household. We work directly with farmers to deliver fresh produce to your doorstep.</p>
-        </div>
-        <div style={{flex:'1 1 300px'}}>
-          <img src="public/assets/about.jpg" alt="About" style={{width:'100%', borderRadius:8}} />
-        </div>
-      </div>
-
-      {/* Gallery */}
-      <div style={{padding:'40px 50px'}}>
-        <h2 style={{color:'#083344', marginBottom:20}}>Gallery</h2>
-        <div style={{display:'flex', flexWrap:'wrap', gap:16}}>
-          {galleryImages.map((img, idx) => (
-            <img key={idx} src={img} alt={`Gallery ${idx+1}`} style={{width:'calc(33% - 10px)', borderRadius:8, objectFit:'cover', height:180}} />
-          ))}
-        </div>
-      </div>
-
-      {/* Services */}
-      <div style={{padding:'40px 50px'}}>
-        <h2 style={{color:'#083344', marginBottom:20}}>Our Services</h2>
-        <div style={{display:'flex', flexWrap:'wrap', gap:20}}>
-          {services.map(s => (
+      
+      <div
+        ref={servicesRef}
+        style={{
+          padding: "60px 50px",
+          opacity: servicesInView ? 1 : 0,
+          transform: servicesInView ? "translateY(0)" : "translateY(50px)",
+          transition: "all 1s ease-out"
+        }}
+      >
+        <h2 style={{ textAlign: "center", fontSize: "3rem", marginBottom: 50, color: "#083344" }}>Our Services</h2>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 30, justifyContent: "center" }}>
+          {services.map((s, idx) => (
             <div key={s.id} style={{
-              flex:'1 1 250px',
-              padding:20,
-              textAlign:'center',
-              boxShadow:'0 2px 6px rgba(0,0,0,0.1)',
-              borderRadius:8,
-              transition:'transform 0.3s, box-shadow 0.3s',
-              cursor:'pointer'
+              flex: "1 1 280px",
+              padding: 30,
+              textAlign: "center",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+              borderRadius: 16,
+              cursor: "pointer",
+              backgroundColor: "white",
+              opacity: servicesInView ? 1 : 0,
+              transform: servicesInView ? "translateY(0)" : "translateY(50px)",
+              transition: `all 0.6s ease-out ${idx * 0.2}s`
             }}
-              onMouseEnter={e => {e.currentTarget.style.transform='scale(1.05)'; e.currentTarget.style.boxShadow='0 6px 12px rgba(0,0,0,0.2)'}}
-              onMouseLeave={e => {e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)'}}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-12px)"; e.currentTarget.style.boxShadow = "0 12px 25px rgba(0,0,0,0.3)"; e.currentTarget.style.backgroundColor = "#e0f7fa"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.15)"; e.currentTarget.style.backgroundColor = "white"; }}
             >
-              <img src={s.logo} alt={s.title} style={{width:60, marginBottom:12}} />
-              <h3>{s.title}</h3>
+              <div style={{ fontSize: 70, color: "#00796b", marginBottom: 20 }}>{s.icon}</div>
+              <h3 style={{ fontSize: "1.5rem", fontWeight: 500 }}>{s.title}</h3>
+              <p style={{ fontSize: "1rem", lineHeight: "1.6", marginTop: 10 }}>{s.description}</p>
             </div>
           ))}
         </div>
       </div>
+
+      
+      <div
+        ref={galleryRef}
+        style={{
+          padding: "60px 50px",
+          opacity: galleryInView ? 1 : 0,
+          transform: galleryInView ? "translateY(0)" : "translateY(50px)",
+          transition: "all 1s ease-out"
+        }}
+      >
+        <h2 style={{ textAlign: "center", fontSize: "3rem", marginBottom: 40, color: "#083344" }}>Gallery</h2>
+        <div style={{
+          display: "flex",
+          overflowX: "auto",
+          scrollSnapType: "x mandatory",
+          gap: 25,
+          paddingBottom: 10,
+          paddingLeft: 10
+        }}>
+          {galleryImages.map((img, idx) => (
+            <img key={idx} src={img} alt={`Gallery ${idx + 1}`} style={{
+              width: 450,
+              height: 350,
+              flex: "0 0 auto",
+              borderRadius: 14,
+              objectFit: "cover",
+              scrollSnapAlign: "center",
+              transition: "transform 0.4s",
+              cursor: "pointer"
+            }}
+              onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+            />
+          ))}
+        </div>
+      </div>
+
     </div>
-  )
+  );
 }
