@@ -1,0 +1,76 @@
+require('./initDB');
+
+const express = require('express');
+const cors = require('cors');
+const sqlite3 = require('sqlite3').verbose();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const path = require('path');
+
+const app = express();
+app.use(cors({ origin: true }));
+app.use(express.json());
+
+const DB_FILE = path.join(__dirname, 'vasundhara.db');
+const db = new sqlite3.Database(DB_FILE);
+
+db.serialize(() => {
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT UNIQUE,
+    contact TEXT,
+    password TEXT
+  )`);
+});
+
+const JWT_SECRET = 'change_this_to_a_random_secret';
+
+app.post('/auth/register', async (req, res) => {
+  try {
+    const { name, email, contact, password } = req.body;
+    if (!name || !email || !password) return res.status(400).json({ error: 'Missing fields' });
+    const hash = await bcrypt.hash(password, 10);
+    db.run(`INSERT INTO users (name,email,contact,password) VALUES (?,?,?,?)`,
+      [name, email, contact || '', hash],
+      function(err) {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }
+        return res.json({ success: true });
+      }
+    );
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Missing fields' });
+  db.get(`SELECT * FROM users WHERE email = ?`, [email], async (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(401).json({ error: 'Invalid credentials' });
+    const match = await bcrypt.compare(password, row.password);
+    if (!match) return res.status(401).json({ error: 'Invalid credentials' });
+    const token = jwt.sign({ id: row.id, email: row.email, name: row.name }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ success: true, token, user: { id: row.id, name: row.name, email: row.email, contact: row.contact } });
+  });
+});
+
+app.get('/auth/me', (req, res) => {
+  const auth = req.headers['authorization'];
+  if (!auth) return res.status(401).json({ error: 'No token' });
+  const parts = auth.split(' ');
+  if (parts.length !==2) return res.status(401).json({ error: 'Bad token' });
+  const token = parts[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return res.json({ user: decoded });
+  } catch (e) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, ()=> console.log('Backend running on', PORT));

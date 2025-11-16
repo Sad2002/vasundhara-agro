@@ -149,7 +149,7 @@ export default function Home() {
                 backgroundColor: "#f9f9f9",
                 opacity: productsInView ? 1 : 0,
                 transform: productsInView ? "translateY(0)" : "translateY(50px)",
-                transition: `all 0.6s ease-out ${idx * 0.2}s` // stagger effect
+                transition: `all 0.6s ease-out ${idx * 0.2}s` 
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.35)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.15)"; }}
