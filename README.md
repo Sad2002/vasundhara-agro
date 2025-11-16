@@ -156,6 +156,12 @@ Frontend runs at:
 
 ------------------------------------------------------------------------
 
+Screenshots
+
+### 🏠 Homepage
+![Homepage](https://raw.githubusercontent.com/Sad2002/vasundhara-agro/main/screenshots/homepage.jpg)
+
+
 # 📄 License
 
 This project is for learning & development use.
