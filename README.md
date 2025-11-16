@@ -159,7 +159,7 @@ Frontend runs at:
 Screenshots
 
 ### 🏠 Homepage
-![Homepage](https://raw.githubusercontent.com/Sad2002/vasundhara-agro/main/screenshots/homepage.jpg)
+![Homepage](https://raw.githubusercontent.com/Sad2002/vasundhara-agro/main/screenshots/home.png)
 
 
 # 📄 License
