@@ -174,4 +174,4 @@ Frontend runs at:
 # 👩‍💻 Author
 
 **Vasundhara Agro Project**\
-Developed with using MERN + MySQL.
+Developed by Sadhana Gonge
