@@ -168,9 +168,6 @@ Frontend runs at:
 
 
 
-# 📄 License
-
-This project is for learning & development use.
 
 ------------------------------------------------------------------------
 
