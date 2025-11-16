@@ -156,10 +156,16 @@ Frontend runs at:
 
 ------------------------------------------------------------------------
 
-Screenshots
+## 📸 Screenshots  
 
 ### 🏠 Homepage
 ![Homepage](https://raw.githubusercontent.com/Sad2002/vasundhara-agro/main/screenshots/home.png)
+### 🔐 Login Page
+![Login Page](https://raw.githubusercontent.com/Sad2002/vasundhara-agro/main/screenshots/loginpage.png)
+
+### 🛒 Product Page
+![Product Page](https://raw.githubusercontent.com/Sad2002/vasundhara-agro/main/screenshots/productpage.png)
+
 
 
 # 📄 License
