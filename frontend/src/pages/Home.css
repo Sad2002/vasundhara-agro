@@ -3,6 +3,7 @@
   font-family: Arial, sans-serif;
 }
 
+
 .about-section {
   display: flex;
   align-items: center;
@@ -32,7 +33,6 @@
   font-weight: bold;
 }
 
-
 .products-grid {
   display: flex;
   justify-content: center;
@@ -55,7 +55,6 @@
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
-
 
 .services-grid {
   display: flex;

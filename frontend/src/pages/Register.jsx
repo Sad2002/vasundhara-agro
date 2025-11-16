@@ -82,7 +82,8 @@ export default function Register() {
     if (Object.values(newError).some(msg => msg !== '')) return
 
     try {
-      await api.post('/auth/register', { name, email, contact, password })
+      const res = await api.post('/auth/register', { name, email, contact, password });
+      if(res.data && res.data.msg) setSuccessMsg(res.data.msg);
       setSuccessMsg('Registered successfully! Please login.')
       setName('')
       setEmail('')
